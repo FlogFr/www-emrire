@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="fr" class="no-js">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ title }}</title>
+  <meta name="description" content="{{ description }}">
+  <meta name="robots" content="{{ robots }}">
+  <link rel="canonical" href="{{ canonical }}">
+  <meta name="theme-color" content="#1C563B">
+
+  <link rel="preload" href="/assets/fonts/fredoka-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/assets/fonts/nunito-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/assets/css/style.css?v={{ v_css }}">
+  <script>document.documentElement.classList.replace('no-js', 'js')</script>
+
+  <link rel="icon" href="/favicon.ico" sizes="48x48">
+  <link rel="icon" href="/icon-192.png" type="image/png" sizes="192x192">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <link rel="manifest" href="/site.webmanifest">
+
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="fr_FR">
+  <meta property="og:site_name" content="Ém. Rire">
+  <meta property="og:title" content="{{ og_title }}">
+  <meta property="og:description" content="{{ description }}">
+  <meta property="og:url" content="{{ canonical }}">
+  <meta property="og:image" content="{{ og_image }}">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="{{ og_image_alt }}">
+  <meta name="twitter:card" content="summary_large_image">
+
+  {{ jsonld }}
+</head>
+<body class="{{ body_class }}">
+  <a class="skip-link" href="#contenu">Aller au contenu</a>
+
+  <header class="site-header">
+    <div class="container site-header__inner">
+      <a href="/" class="brand" aria-label="Ém. Rire, retour à l’accueil">
+        <img src="/assets/img/logo-emrire.webp" width="400" height="289" alt="Ém. Rire" class="brand__logo">
+      </a>
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="menu-principal">
+        <span class="nav-toggle__bars" aria-hidden="true"></span>
+        <span class="sr-only">Ouvrir le menu</span>
+      </button>
+      <nav class="site-nav" id="menu-principal" aria-label="Menu principal">
+        <ul>
+          {{ nav }}
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="contenu">
+    {{ content }}
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <img src="/assets/img/logo-emrire-clair.webp" width="400" height="289" alt="Ém. Rire" class="footer-brand__logo" loading="lazy">
+          <p>Communication animale et kinésiologie animale à Nantes et dans le Grand Ouest. Je t’aide à mettre des mots sur ce que vit ton animal et à libérer ce qui bloque.</p>
+        </div>
+        <div>
+          <p class="footer-title">Navigation</p>
+          <ul class="footer-links">
+            <li><a href="/qui-suis-je/">Qui suis-je ?</a></li>
+            <li><a href="/communication-animale/">Communication animale</a></li>
+            <li><a href="/kinesiologie-animale/">Kinésiologie animale</a></li>
+            <li><a href="/infos-tarifs/">Infos &amp; Tarifs</a></li>
+            <li><a href="/contact/">Contact</a></li>
+          </ul>
+        </div>
+        <div>
+          <p class="footer-title">Me contacter</p>
+          <ul class="footer-links footer-links--icons">
+            <li><x-icon name="phone"> {{ contact_phone }}</li>
+            <li><x-icon name="mail"> {{ contact_email }}</li>
+            <li><x-icon name="instagram"> {{ contact_instagram }}</li>
+            <li><x-icon name="pin"> Basée à Nantes, j’interviens dans tout le Grand Ouest</li>
+          </ul>
+        </div>
+      </div>
+      <p class="footer-disclaimer">
+        La communication animale et la kinésiologie animale sont des approches complémentaires de bien-être. Elles ne remplacent en aucun cas un diagnostic ou un traitement vétérinaire.
+      </p>
+      <div class="footer-bottom">
+        <p>© {{ year }} Ém. Rire · {{ owner }} · Nantes</p>
+        <p><a href="/mentions-legales/">Mentions légales</a></p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="/assets/js/main.js?v={{ v_js }}" defer></script>
+</body>
+</html>

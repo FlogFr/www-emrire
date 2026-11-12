@@ -1,0 +1,9 @@
+# Site généré par scripts/build.py (déployé par GitHub Actions)
+_site/
+
+# Photos originales (plusieurs centaines de Mo, dont un zip > 100 Mo refusé par GitHub).
+# Les versions optimisées pour le web sont dans src/assets/img/ (voir scripts/optimize-images.sh).
+images/
+
+__pycache__/
+.DS_Store
