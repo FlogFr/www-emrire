@@ -11,6 +11,7 @@ Ce que fait le build :
 - assemble chaque page de src/pages/ dans src/layout.html (en-tête, menu, pied de page, SEO) ;
 - remplace les balises maison <x-img> (images responsives) et <x-icon> (icônes SVG) ;
 - copie src/assets/ et src/static/ ;
+- génère le JSON-LD FAQPage à partir des questions visibles (<div class="faq"><details>…) ;
 - génère sitemap.xml ;
 - vérifie qu'aucun lien interne n'est cassé.
 """
@@ -40,9 +41,10 @@ OWNER = "Julie Le Jeune"
 # Coordonnées affichées sur tout le site (pied de page, page contact, données structurées).
 # Laisser vide tant que l'info n'est pas connue : un repère « à compléter » s'affiche.
 CONTACT = {
-    "email": "",  # ex. "contact@emrire.fr"
-    "telephone": "",  # ex. "06 12 34 56 78"
+    "email": "em.rire.kinesiologie@gmail.com",
+    "telephone": "06 85 44 88 01",
     "instagram": "https://www.instagram.com/em.rire_kinesioanimale/",
+    "code_postal": "44000",
 }
 
 # Menu principal : (clé, URL, libellé)
@@ -202,11 +204,15 @@ def tbd(label: str) -> str:
     return f'<span class="tbd">{esc(label)}</span>'
 
 
+def international_phone(phone: str) -> str:
+    """« 06 12 34 56 78 » → « +33612345678 » (liens tel: et données structurées)."""
+    tel = re.sub(r"[^\d+]", "", phone)
+    return "+33" + tel[1:] if tel.startswith("0") else tel
+
+
 def contact_tokens() -> dict:
     email, phone, insta = CONTACT["email"], CONTACT["telephone"], CONTACT["instagram"]
-    tel = re.sub(r"[^\d+]", "", phone)
-    if tel.startswith("0"):
-        tel = "+33" + tel[1:]
+    tel = international_phone(phone)
     handle = "@" + insta.rstrip("/").rsplit("/", 1)[-1] if insta else ""
     return {
         "contact_email": f'<a href="mailto:{esc(email)}">{esc(email)}</a>' if email else tbd("e-mail à compléter"),
@@ -253,6 +259,7 @@ def business_jsonld() -> dict:
         "image": f"{SITE_URL}/assets/img/og-accueil.jpg",
         "address": {
             "@type": "PostalAddress",
+            "postalCode": CONTACT["code_postal"],
             "addressLocality": "Nantes",
             "addressRegion": "Pays de la Loire",
             "addressCountry": "FR",
@@ -260,10 +267,12 @@ def business_jsonld() -> dict:
         "areaServed": [
             {"@type": "City", "name": "Nantes"},
             {"@type": "AdministrativeArea", "name": "Loire-Atlantique"},
-            {"@type": "AdministrativeArea", "name": "Pays de la Loire"},
-            {"@type": "AdministrativeArea", "name": "Bretagne"},
+            {"@type": "AdministrativeArea", "name": "Vendée"},
+            {"@type": "AdministrativeArea", "name": "Maine-et-Loire"},
+            {"@type": "AdministrativeArea", "name": "Finistère"},
         ],
-        "knowsAbout": ["Communication animale", "Kinésiologie animale", "Bien-être animal"],
+        "priceRange": "30 € à 65 €",
+        "knowsAbout": ["Communication animale", "Kinésiologie animale", "Libération émotionnelle", "Bien-être animal"],
         "founder": {
             "@type": "Person",
             "name": OWNER,
@@ -274,7 +283,7 @@ def business_jsonld() -> dict:
     if CONTACT["email"]:
         business["email"] = CONTACT["email"]
     if CONTACT["telephone"]:
-        business["telephone"] = CONTACT["telephone"]
+        business["telephone"] = international_phone(CONTACT["telephone"])
     if CONTACT["instagram"]:
         business["sameAs"] = [CONTACT["instagram"]]
     website = {
@@ -286,6 +295,32 @@ def business_jsonld() -> dict:
         "publisher": {"@id": business["@id"]},
     }
     return {"@context": "https://schema.org", "@graph": [business, website]}
+
+
+def html_to_text(fragment: str) -> str:
+    text = re.sub(r"<(?:br|/p|/li|/ul|/ol)\b[^>]*>", " ", fragment)  # fins de blocs → espace
+    text = re.sub(r"<[^>]+>", "", text)  # balises en ligne (<strong>, <a>…) → rien
+    return re.sub(r"\s+", " ", html.unescape(text)).strip()
+
+
+def faq_jsonld(rendered: str, page: Path) -> dict | None:
+    """FAQPage construit à partir des questions réellement affichées : JSON-LD et page restent identiques."""
+    blocks = re.findall(r'<div class="faq">\s*((?:<details>.*?</details>\s*)+)</div>', rendered, re.S)
+    items = []
+    for block in blocks:
+        for question, answer in re.findall(
+            r"<details>\s*<summary>(.*?)</summary>\s*<div>(.*?)</div>\s*</details>", block, re.S
+        ):
+            items.append({
+                "@type": "Question",
+                "name": html_to_text(question),
+                "acceptedAnswer": {"@type": "Answer", "text": html_to_text(answer)},
+            })
+    if 'class="faq"' in rendered and not items:
+        fail(f"{page.name} : bloc .faq sans question <details><summary><div> lisible")
+    if not items:
+        return None
+    return {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": items}
 
 
 def file_hash(path: Path) -> str:
@@ -353,6 +388,10 @@ def build() -> None:
         rendered = re.sub(r"\{\{\s*([\w]+)\s*\}\}", fill, layout)
         rendered = re.sub(r"\{\{\s*([\w]+)\s*\}\}", fill, rendered)
         rendered = re.sub(r"<x-icon\s+([^>]*?)\s*/?>", lambda m: render_icon(m, page), rendered)
+        faq = faq_jsonld(rendered, page)
+        if faq:
+            script = f'<script type="application/ld+json">{json.dumps(faq, ensure_ascii=False)}</script>'
+            rendered = rendered.replace("</head>", f"  {script}\n</head>", 1)
 
         dest = output_file(meta["path"])
         dest.parent.mkdir(parents=True, exist_ok=True)

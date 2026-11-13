@@ -1192,6 +1192,11 @@ ol {
   align-items: stretch;
   gap: clamp(20px, 3vw, 32px);
 }
+.pricing--2 {
+  grid-template-columns: repeat(2, 1fr);
+  max-width: 880px;
+  margin-inline: auto;
+}
 .price-card {
   display: flex;
   flex-direction: column;

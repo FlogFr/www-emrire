@@ -1,6 +1,6 @@
 # CLAUDE.md — site emrire.fr
 
-Site vitrine statique d'**Ém. Rire** (Julie Le Jeune, Instagram [@em.rire_kinesioanimale](https://www.instagram.com/em.rire_kinesioanimale/)) : communication animale et kinésiologie animale, basée à Nantes, interventions dans le Grand Ouest. Site en français, **tutoiement** partout (« je t'aide… »), ton doux et bienveillant.
+Site vitrine statique d'**Ém. Rire** (Julie Le Jeune, Instagram [@em.rire_kinesioanimale](https://www.instagram.com/em.rire_kinesioanimale/)) : communication animale et kinésiologie animale, basée à Nantes, interventions dans le Grand Ouest. Site en français, **tutoiement** partout (« je t'aide… »), ton doux et bienveillant. Les textes fournis par Julie (novembre 2026) étaient au vouvoiement : ils ont été repris quasi mot pour mot, adaptés au tutoiement.
 
 ## Commandes
 
@@ -18,7 +18,7 @@ Aucune dépendance Python hors bibliothèque standard. Le script d'images demand
 - `src/pages/*.html` : une page = un en-tête `clé: valeur` entre `---` puis le contenu du `<main>`.
   - Clés obligatoires : `title`, `description`, `path` (`/` ou `/slug/`, avec slash final).
   - Optionnelles : `nav` (clé du menu active), `breadcrumb` (libellé du fil d'Ariane, inséré via `{{ breadcrumb }}`), `og_title`, `og_image` (nom d'un `og-*.jpg` sans extension), `og_image_alt`, `robots: noindex`.
-- `scripts/build.py` : génère `_site/`. Contient la config partagée : `OWNER`, `CONTACT` (téléphone, e-mail, Instagram), `NAV` (menu), `ICONS`, et le JSON-LD de l'entreprise (`business_jsonld`).
+- `scripts/build.py` : génère `_site/`. Contient la config partagée : `OWNER`, `CONTACT` (téléphone, e-mail, Instagram, code postal), `NAV` (menu), `ICONS`, et le JSON-LD de l'entreprise (`business_jsonld` : adresse, zone d'intervention, fourchette de prix).
 - `src/assets/` (css, js, fonts, img) et `src/static/` (robots.txt, favicons, manifest) sont copiés tels quels.
 - `_site/` : **généré, ne jamais le modifier à la main** (ignoré par git).
 - `images/` : photos originales (lourdes, ignorées par git). Seules les versions optimisées de `src/assets/img/` sont versionnées.
@@ -47,7 +47,7 @@ Aucune dépendance Python hors bibliothèque standard. Le script d'images demand
 - `title` unique, 60 caractères max, terminé par `| Ém. Rire`. `description` unique, ~140–160 caractères (celle de l'accueil est le texte fourni par la cliente, à garder).
 - Mots-clés locaux naturels : communication animale, kinésiologie animale, kinésiologue / communicante animalière, Nantes, Loire-Atlantique, Grand Ouest.
 - Tout `alt` décrit la photo en français ; décor = `aria-hidden="true"`.
-- Données structurées : `ProfessionalService` + `WebSite` sur toutes les pages (build), `BreadcrumbList` automatique, `Service` sur les pages de prestation, `FAQPage` **identique** aux questions visibles de la page.
+- Données structurées : `ProfessionalService` + `WebSite` sur toutes les pages (build), `BreadcrumbList` automatique, `Service` (avec `offers` : prix) sur les pages de prestation, `FAQPage` **généré au build** à partir des questions visibles (`<div class="faq"><details><summary>Question</summary><div>Réponse</div></details>`) : ne jamais l'écrire à la main. Formuler chaque question de façon explicite (elle sert aussi de question dans le JSON-LD).
 - Pas de script tiers, pas de cookie, pas de Google Fonts distant (polices auto-hébergées). Les mentions légales l'affirment : les mettre à jour si on ajoute un outil de mesure d'audience ou un formulaire.
 - Performance : WebP uniquement, pas de framework JS, CSS unique (`src/assets/css/style.css`).
 
@@ -64,13 +64,20 @@ Design original, inspiré de l'esprit du kit Elementor « Kenneli » choisi par 
 - Toujours garder l'avertissement : la communication et la kinésiologie animales **ne remplacent pas un vétérinaire**. Aucune promesse de guérison ni vocabulaire médical (diagnostic, traitement, soigner).
 - Les infos manquantes sont marquées `<span class="tbd">…</span>` (surlignées en jaune sur le site). Les lister : `grep -rn 'class="tbd"' src/` et `CONTACT` vide dans `scripts/build.py`.
 
+### Infos fournies par la cliente (novembre 2026)
+
+- Contact : Julie Le Jeune, 44000 Nantes, em.rire.kinesiologie@gmail.com, 06 85 44 88 01.
+- Zone : basée à Nantes, déplacements principalement en 44, 85, 49 ; tournées régulières dans le Finistère (29).
+- Kinésiologie : 65 € la séance + frais de déplacement au-delà de 30 km autour de Nantes ; 1h30 en moyenne (prévoir 1h30 à 2h) ; à domicile ; animaux domestiques ou sauvages, y compris non manipulables et agressifs.
+- Communication : de 30 à 50 € selon la durée et le nombre de questions/messages ; à distance ou en présentiel à domicile.
+- Formation d'un an (communication + kinésiologie animale) à l'aube de ses 30 ans, spécialisation animaux sauvages.
+
 ### À compléter ou faire valider par la cliente
 
-- Parcours, formations, histoire du nom « Ém. Rire » (page Qui suis-je).
-- Téléphone et e-mail (`CONTACT` dans `scripts/build.py`).
-- Tarifs, formules (la formule « Communication + kinésiologie » est une proposition), durée des séances, frais de déplacement, paiement, annulation.
-- Hypothèses rédigées à confirmer : communication possible à distance à partir d'une photo, format du retour (appel, visio ou écrit), zone d'intervention (Loire-Atlantique, Vendée, Maine-et-Loire, Bretagne).
-- Mentions légales : statut juridique, adresse, SIRET.
+- Histoire du nom « Ém. Rire » (page Qui suis-je) ; nom de l'école de formation (facultatif).
+- Barème des frais de déplacement au-delà de 30 km, moyens de paiement, conditions d'annulation.
+- Hypothèses rédigées à confirmer : communication à distance à partir d'une photo, format du retour (appel, visio ou écrit).
+- Mentions légales : statut juridique, adresse complète, SIRET.
 - Pas encore de témoignages : en ajouter quand la cliente en a (avec accord des propriétaires).
 
 ## Déploiement
