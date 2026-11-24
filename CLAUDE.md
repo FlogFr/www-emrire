@@ -69,14 +69,13 @@ Design original, inspiré de l'esprit du kit Elementor « Kenneli » choisi par 
 - Contact : Julie Le Jeune, 44000 Nantes, em.rire.kinesiologie@gmail.com, 06 85 44 88 01.
 - Zone : basée à Nantes, déplacements principalement en 44, 85, 49 ; tournées régulières dans le Finistère (29).
 - Kinésiologie : 65 € la séance + frais de déplacement au-delà de 30 km autour de Nantes ; 1h30 en moyenne (prévoir 1h30 à 2h) ; à domicile ; animaux domestiques ou sauvages, y compris non manipulables et agressifs.
-- Communication : de 30 à 50 € selon la durée et le nombre de questions/messages ; à distance ou en présentiel à domicile.
+- Communication : de 30 à 50 € selon la durée et le nombre de questions/messages ; à distance (à partir d'une photo récente) ou en présentiel à domicile ; compte-rendu sous forme d'enregistrement vocal.
 - Formation d'un an (communication + kinésiologie animale) à l'aube de ses 30 ans, spécialisation animaux sauvages.
 
 ### À compléter ou faire valider par la cliente
 
-- Histoire du nom « Ém. Rire » (page Qui suis-je) ; nom de l'école de formation (facultatif).
-- Barème des frais de déplacement au-delà de 30 km, moyens de paiement, conditions d'annulation.
-- Hypothèses rédigées à confirmer : communication à distance à partir d'une photo, format du retour (appel, visio ou écrit).
+- Nom de l'école de formation (facultatif). La cliente a fait retirer la question « Pourquoi Ém. Rire ? » et le bloc « Règlement & annulation » (à défaut : « me consulter »).
+- Barème des frais de déplacement au-delà de 30 km.
 - Mentions légales : statut juridique, adresse complète, SIRET.
 - Pas encore de témoignages : en ajouter quand la cliente en a (avec accord des propriétaires).
 

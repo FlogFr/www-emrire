@@ -45,6 +45,16 @@ IMG_4864.JPG|balade-cheval-foret
 F30347FB-9A11-429A-923A-7E7E8FCA76FF.JPG|faon
 IMG_6129.HEIC|chouette
 IMG_7258.jpg|poney-allonge-fleurs
+QUISUISJE.jpeg|julie-le-jeune-kinesiologue-animaliere-nantes
+MALINOIS.jpeg|berger-belge-malinois-peluche
+DOUDOU1.jpg|poney-blanc-champ-de-fleurs
+ACCUEIL.heic|chouette-perchoir-lierre
+PRALINE.jpg|chevre-naine-curieuse
+CONTACT.jpeg|chat-tigre-yeux-verts
+BAS1.jpg|iguane-terrarium
+BAS2.JPG|cocker-jardin
+BAS3.jpg|ane-curieux-cloture
+BAS4.jpg|vaches-noires-et-blanches-pre
 EOF
 )
 
@@ -61,15 +71,15 @@ export SRC OUT
 
 echo "$IMAGES" | tr '|' '\t' | xargs -P "$(nproc)" -L1 bash -c 'convert_one "$0" "$1"'
 
-# Images Open Graph (partage réseaux sociaux) : 1200x630, JPEG
+# Images Open Graph (partage réseaux sociaux) : 1200x630, JPEG ; 4e argument facultatif : décalage du cadrage
 og() {
   magick "$SRC/$1" -auto-orient -strip -resize 1200x630^ -gravity "${3:-center}" \
-    -extent 1200x630 -quality 82 -interlace Plane "$OUT/$2.jpg"
+    -extent "1200x630${4:-}" -quality 82 -interlace Plane "$OUT/$2.jpg"
 }
 og 0c10c6db-ba6e-4fb7-bb4a-267f8ca83e96.jpg og-accueil
 og d1b2acfd-b2f0-49aa-805a-137baee876ac.JPG og-communication-animale
 og DSC02579.JPG og-kinesiologie-animale north
-og IMG_6169.jpg og-qui-suis-je
+og QUISUISJE.jpeg og-qui-suis-je north +0+330
 og D3E423E0-94BE-4838-94FF-B76A8EECA090.JPG og-infos-tarifs north
 
 # Logo : on nettoie les pixels quasi transparents puis on recadre
